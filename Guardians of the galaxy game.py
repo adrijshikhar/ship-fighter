@@ -34,7 +34,13 @@ score_pen.setposition(-290, 280)
 scorestring = "Score: %s" % score
 score_pen.write(scorestring, False, align="left", font=("Arial", 14, "normal"))
 score_pen.hideturtle()
-
+# Game over
+game_over = turtle.Turtle()
+game_over.speed(0)
+game_over.color("orange")
+game_over.penup()
+game_over.setposition(-80, 0)
+game_over.hideturtle()
 # Step_3:Creating the player turtle
 player = turtle.Turtle()
 player.color('blue')
@@ -74,12 +80,13 @@ bullet.penup()
 bullet.speed(0)
 bullet.setheading(90)
 bullet.shapesize(0.5, 0.5)
+bullet.setposition(0, -300)
 bullet.hideturtle()
 
 bulletspeed = 20
 # Define bullet state
 # ready- ready to fire
-#fire- bullet is firing
+# fire- bullet is firing
 bulletstate = "ready"
 
 # Step4:Move the player left and right
@@ -143,6 +150,12 @@ while True:
             for e in enemies:
                 y = e.ycor()
                 y -= 40
+                if(y in range(-350, -270)):
+                    player.hideturtle()
+                    for e in enemies:
+                        e.hideturtle()
+                    game_over.write("Game over", False, align="left", font=("Arial", 24, "normal"))
+                    exit
                 e.sety(y)
             # Change enemy direction
             enemyspeed *= -1
@@ -151,6 +164,12 @@ while True:
             for e in enemies:
                 y = e.ycor()
                 y -= 40
+                if(y in range(-350, -270)):
+                    player.hideturtle()
+                    for e in enemies:
+                        e.hideturtle()
+                    game_over.write("Game over", False, align="left", font=("Arial", 24, "normal"))
+                    exit
                 e.sety(y)
             # Change the direction
             enemyspeed *= -1
@@ -173,9 +192,10 @@ while True:
 
         if isCollision(player, enemy):
             player.hideturtle()
-            enemy.hideturtle()
-            print("Game over")
-            break
+            for e in enemies:
+                    e.hideturtle()
+            game_over.write("Game over", False, align="left", font=("Arial", 24, "normal"))
+            exit
 
     # Move the bullet
     if bulletstate == 'fire':
